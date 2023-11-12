@@ -5,11 +5,10 @@ interface IToken {
   refreshToken: string;
 }
 
-@Table
+@Table({ tableName: 'token' })
 export class Token extends Model<Token, IToken> {
   @Column({
-    type: DataType.NUMBER,
-    allowNull: false,
+    type: DataType.INTEGER,
   })
   user: number;
 

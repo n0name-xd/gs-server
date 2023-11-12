@@ -8,7 +8,7 @@ interface UserCreationAttrs {
   activationLink: string;
 }
 
-@Table
+@Table({ tableName: 'user' })
 export class User extends Model<User, UserCreationAttrs> {
   @Column({
     type: DataType.STRING,
@@ -28,6 +28,7 @@ export class User extends Model<User, UserCreationAttrs> {
     type: DataType.BOOLEAN,
     unique: false,
     allowNull: false,
+    defaultValue: false,
   })
   isActivated: boolean;
 
@@ -35,7 +36,6 @@ export class User extends Model<User, UserCreationAttrs> {
     type: DataType.STRING,
     unique: false,
     allowNull: false,
-    defaultValue: false,
   })
   activationLink: string;
 

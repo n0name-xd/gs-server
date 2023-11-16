@@ -23,6 +23,7 @@ export class UsersService {
   }
 
   async removeById(id: number) {
+    // Нужно еще при удалении пользователя удолять из tokenModel запись о токенах
     const user = await this.userModel.findOne({
       where: {
         id,

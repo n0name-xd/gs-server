@@ -6,6 +6,7 @@ import { RegistrationDto } from './dto/registrationDto';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from 'src/users/models/user.model';
 import { Token } from './models/token.model';
+import { ClientUserDto } from './dto/clientUserDto';
 
 @Injectable()
 export class AuthService {
@@ -51,7 +52,15 @@ export class AuthService {
 
       await this.sendActivationMail(email, activationLink);
 
-      return user;
+      const userDto = new ClientUserDto(user);
+      const tokens = this.generateToken({ ...userDto });
+
+      await this.saveToken(userDto.id, tokens.refreshToken);
+
+      return {
+        ...tokens,
+        user: userDto,
+      };
     } catch (error) {
       console.log('error', error);
     }
@@ -76,8 +85,18 @@ export class AuthService {
     };
   }
 
-  async saveToken(userId, refreshToken) {
-    console.log(userId, refreshToken);
-    // const tokenData = await
+  async saveToken(userId: number, refreshToken: string) {
+    const tokenData = await this.tokenModel.findOne({
+      where: { userId: userId },
+    });
+
+    if (tokenData) {
+      tokenData.refreshToken = refreshToken;
+      return await tokenData.save();
+    }
+
+    const token = await this.tokenModel.create({ userId, refreshToken });
+
+    return token;
   }
 }

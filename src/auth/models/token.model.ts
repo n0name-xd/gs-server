@@ -1,7 +1,7 @@
 import { Column, DataType, Model, Table } from 'sequelize-typescript';
 
 interface IToken {
-  user: number;
+  userId: number;
   refreshToken: string;
 }
 
@@ -10,7 +10,7 @@ export class Token extends Model<Token, IToken> {
   @Column({
     type: DataType.INTEGER,
   })
-  user: number;
+  userId: number;
 
   @Column({
     type: DataType.STRING,

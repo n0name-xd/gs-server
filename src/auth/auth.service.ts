@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import * as jwt from 'jsonwebtoken';
 import { LoginDto } from './dto/loginDto';
 import { RegistrationDto } from './dto/registrationDto';
 import { InjectModel } from '@nestjs/sequelize';
@@ -62,7 +62,7 @@ export class AuthService {
         user: userDto,
       };
     } catch (error) {
-      console.log('error', error);
+      throw error;
     }
   }
 
@@ -86,17 +86,27 @@ export class AuthService {
   }
 
   async saveToken(userId: number, refreshToken: string) {
+    console.log('userId', userId);
+
     const tokenData = await this.tokenModel.findOne({
       where: { userId: userId },
     });
-
+    console.log('tokenData', tokenData);
     if (tokenData) {
       tokenData.refreshToken = refreshToken;
       return await tokenData.save();
     }
 
-    const token = await this.tokenModel.create({ userId, refreshToken });
+    const token = await this.tokenModel.create({
+      userId: userId,
+      refreshToken,
+    });
 
     return token;
+  }
+
+  async checkTokens() {
+    const tokens = await this.tokenModel.findAll();
+    return tokens;
   }
 }

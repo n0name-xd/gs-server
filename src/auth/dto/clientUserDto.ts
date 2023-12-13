@@ -1,9 +1,9 @@
 import { User } from 'src/users/models/user.model';
 
 export class ClientUserDto {
-  email: string;
-  id: number;
-  isActivated: boolean;
+  readonly email: string;
+  readonly id: number;
+  readonly isActivated: boolean;
 
   constructor(model: User) {
     this.email = model.email;

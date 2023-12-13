@@ -3,6 +3,7 @@ import { LoginDto } from './dto/loginDto';
 import { AuthService } from './auth.service';
 import { RegistrationDto } from './dto/registrationDto';
 import { PrevAuthGuard } from './guards/prev-auth.guard';
+// import { Response } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -16,8 +17,24 @@ export class AuthController {
 
   @UseGuards(PrevAuthGuard)
   @Post('registration')
-  registration(@Body() registrationDto: RegistrationDto) {
-    return this.authServices.registration(registrationDto);
+  async registration(
+    @Body() registrationDto: RegistrationDto,
+    // @Res({ passthrough: true }) response: Response,
+  ) {
+    try {
+      // console.log(1);
+      const user = await this.authServices.registration(registrationDto);
+      // console.log('user', user);
+      return user;
+    } catch (err) {
+      throw err;
+    }
+
+    // response.cookie('refreshToken', user.refreshToken, {
+    //   maxAge: 30 * 24 * 60 * 60_000,
+    //   httpOnly: true,
+    //   // secure: false,  // if I use httpS
+    // });
   }
 
   @Post('logout')
@@ -28,4 +45,9 @@ export class AuthController {
 
   @Get('refresh')
   refresh() {}
+
+  @Get('checkToken')
+  checkToken() {
+    return this.authServices.checkTokens();
+  }
 }

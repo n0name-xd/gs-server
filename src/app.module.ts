@@ -7,6 +7,7 @@ import { UsersModule } from './users/users.module';
 import { User } from './users/models/user.model';
 import { AuthModule } from './auth/auth.module';
 import { Token } from './auth/models/token.model';
+import { TopbanerModule } from './topbaner/topbaner.module';
 
 @Module({
   imports: [
@@ -20,9 +21,11 @@ import { Token } from './auth/models/token.model';
       database: process.env.DATABASE_NAME,
       models: [User, Token],
       autoLoadModels: true,
+      synchronize: true,
     }),
     UsersModule,
     AuthModule,
+    TopbanerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

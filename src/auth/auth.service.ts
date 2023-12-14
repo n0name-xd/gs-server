@@ -92,6 +92,7 @@ export class AuthService {
       where: { userId: userId },
     });
     console.log('tokenData', tokenData);
+    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
     if (tokenData) {
       tokenData.refreshToken = refreshToken;
       return await tokenData.save();

@@ -9,6 +9,6 @@ import { Token } from 'src/auth/models/token.model';
   controllers: [UsersController],
   providers: [UsersService],
   imports: [SequelizeModule.forFeature([User, Token])],
-  exports: [UsersService],
+  exports: [UsersService, SequelizeModule],
 })
 export class UsersModule {}

@@ -86,13 +86,10 @@ export class AuthService {
   }
 
   async saveToken(userId: number, refreshToken: string) {
-    console.log('userId', userId);
-
     const tokenData = await this.tokenModel.findOne({
-      where: { userId: userId },
+      where: { userId },
     });
-    console.log('tokenData', tokenData);
-    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+
     if (tokenData) {
       tokenData.refreshToken = refreshToken;
       return await tokenData.save();

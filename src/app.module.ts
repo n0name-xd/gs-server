@@ -8,10 +8,27 @@ import { User } from './users/models/user.model';
 import { AuthModule } from './auth/auth.module';
 import { Token } from './auth/models/token.model';
 import { TopbanerModule } from './topbaner/topbaner.module';
+import { MailerModule } from '@nestjs-modules/mailer';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
+    MailerModule.forRootAsync({
+      useFactory: async () => ({
+        transport: {
+          host: process.env.MAIL_HOST,
+          port: +process.env.MAIL_PORT,
+          secure: false,
+          auth: {
+            user: process.env.MAIL_USER,
+            pass: process.env.MAIL_PASS,
+          },
+        },
+        defaults: {
+          from: process.env.MAIL_SENDER,
+        },
+      }),
+    }),
     SequelizeModule.forRoot({
       dialect: 'postgres',
       host: 'localhost',

@@ -5,4 +5,8 @@ export class TopbanerService {
   getAll() {
     return ['hi', 'ept'];
   }
+
+  setBanners() {
+    return 'success';
+  }
 }

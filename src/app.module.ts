@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { Token } from './auth/models/token.model';
 import { TopbanerModule } from './topbaner/topbaner.module';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { TopBanner } from './topbaner/models/top-banner.model';
 
 @Module({
   imports: [
@@ -31,12 +32,12 @@ import { MailerModule } from '@nestjs-modules/mailer';
     }),
     SequelizeModule.forRoot({
       dialect: 'postgres',
-      host: 'localhost',
+      host: process.env.DATABASE_HOST,
       port: +process.env.DATABASE_PORT,
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
-      models: [User, Token],
+      models: [User, Token, TopBanner],
       autoLoadModels: true,
       synchronize: true,
     }),

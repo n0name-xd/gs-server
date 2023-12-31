@@ -1,5 +1,5 @@
 export class SetBannersDto {
-  [key: string]: Array<{
+  readonly [key: string]: Array<{
     fieldname: string;
     originalname: string;
     encoding: string;

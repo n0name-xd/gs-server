@@ -1,13 +1,13 @@
 import { Column, DataType, Model, Table } from 'sequelize-typescript';
 
-interface TopBannerAttrs {
+export interface TopBannerAttrs {
   id: number;
   linkBannerOne: string;
   linkBannerTwo: string;
   linkBannerThree: string;
 }
 
-@Table({ tableName: 'top-banner' })
+@Table({ tableName: 'banner' })
 export class TopBanner extends Model<TopBanner, TopBannerAttrs> {
   @Column({
     type: DataType.INTEGER,

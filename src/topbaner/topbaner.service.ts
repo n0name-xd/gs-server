@@ -12,17 +12,32 @@ export class TopbanerService {
 
   async setBanners(files: SetBannersDto) {
     try {
+      const newBannersData = {
+        id: 1,
+        linkBannerOne: files.bannerOne[0].path,
+        linkBannerTwo: files.bannerTwo[0].path,
+        linkBannerThree: files.bannerThree[0].path,
+      };
+
       const bannerList = await this.topBannerModel.findAll();
-      console.log('bannerList', bannerList);
-      if (!bannerList) {
+
+      if (bannerList.length === 0) {
         await this.topBannerModel.create({
-          id: 1,
-          linkBannerOne: files.bannerOne[0].path,
-          linkBannerTwo: files.bannerTwo[0].path,
-          linkBannerThree: files.bannerThree[0].path,
+          ...newBannersData,
         });
+
+        return 'The banner has been successfully installed';
+      } else {
+        const bannerData = await this.topBannerModel.findOne({
+          where: { id: 1 },
+        });
+        bannerData.set({
+          ...newBannersData,
+        });
+
+        await bannerData.save();
+        return 'The banner has been successfully updated';
       }
-      return 'success';
     } catch (err) {
       console.log(err);
     }

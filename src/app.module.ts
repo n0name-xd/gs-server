@@ -10,6 +10,7 @@ import { Token } from './auth/models/token.model';
 import { TopbanerModule } from './topbaner/topbaner.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { TopBanner } from './topbaner/models/top-banner.model';
+import { FileModule } from './file/file.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { TopBanner } from './topbaner/models/top-banner.model';
     UsersModule,
     AuthModule,
     TopbanerModule,
+    FileModule,
   ],
   controllers: [AppController],
   providers: [AppService],

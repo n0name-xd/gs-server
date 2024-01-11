@@ -19,7 +19,25 @@ export class TopbanerController {
   async getAll() {
     try {
       const bannersList = await this.topbannerService.getAll();
-      return bannersList;
+
+      const setPath = (currentPath: string): string => {
+        const startPathLength = process.cwd().length;
+        const formatPath = currentPath
+          .slice(startPathLength)
+          .replace('\\files\\', '')
+          .split('\\')
+          .join('/');
+
+        const result = `${process.env.SERVER_URL}/images/${formatPath}`;
+
+        return result;
+      };
+
+      return {
+        linkBannerOne: setPath(bannersList[0].linkBannerOne),
+        linkBannerTwo: setPath(bannersList[0].linkBannerTwo),
+        linkBannerThree: setPath(bannersList[0].linkBannerThree),
+      };
     } catch (err) {
       console.log(err);
     }

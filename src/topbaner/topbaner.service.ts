@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { SetBannersDto } from './dto/set-banner.dto';
 import { InjectModel } from '@nestjs/sequelize';
 import { TopBanner } from './models/top-banner.model';
+import * as fs from 'fs';
+import * as path from 'path';
 
 @Injectable()
 export class TopbanerService {
@@ -14,10 +16,18 @@ export class TopbanerService {
     try {
       const newBannersData = {
         id: 1,
-        linkBannerOne: files.bannerOne[0].path,
-        linkBannerTwo: files.bannerTwo[0].path,
-        linkBannerThree: files.bannerThree[0].path,
+        linkBannerOne: files?.bannerOne
+          ? path.resolve(files.bannerOne[0]?.path)
+          : '',
+        linkBannerTwo: files?.bannerTwo
+          ? path.resolve(files.bannerTwo[0].path)
+          : '',
+        linkBannerThree: files?.bannerThree
+          ? path.resolve(files.bannerThree[0].path)
+          : '',
       };
+
+      console.log('newBannersData', newBannersData);
 
       const bannerList = await this.topBannerModel.findAll();
 
@@ -31,11 +41,39 @@ export class TopbanerService {
         const bannerData = await this.topBannerModel.findOne({
           where: { id: 1 },
         });
+
+        const oldLink = {
+          linkBannerOne: bannerData.linkBannerOne,
+          linkBannerTwo: bannerData.linkBannerTwo,
+          linkBannerThree: bannerData.linkBannerThree,
+        };
+
         bannerData.set({
           ...newBannersData,
         });
 
         await bannerData.save();
+
+        const deleteFile = (pathLink: string): void => {
+          const normalizeFilePath = path.normalize(pathLink);
+
+          fs.unlink(normalizeFilePath, () =>
+            console.log(`File ${normalizeFilePath} successful deleted`),
+          );
+        };
+
+        if (bannerData.linkBannerOne) {
+          deleteFile(oldLink.linkBannerOne);
+        }
+
+        if (bannerData.linkBannerTwo) {
+          deleteFile(oldLink.linkBannerTwo);
+        }
+
+        if (bannerData.linkBannerThree) {
+          deleteFile(oldLink.linkBannerThree);
+        }
+
         return 'The banner has been successfully updated';
       }
     } catch (err) {
@@ -44,6 +82,8 @@ export class TopbanerService {
   }
 
   async getAll() {
-    return this.topBannerModel.findAll();
+    const banners = await this.topBannerModel.findAll();
+
+    return banners;
   }
 }

@@ -14,22 +14,20 @@ export class TopbanerService {
 
   async setBanners(files: SetBannersDto) {
     try {
+      const bannerList = await this.topBannerModel.findAll();
+
       const newBannersData = {
         id: 1,
         linkBannerOne: files?.bannerOne
           ? path.resolve(files.bannerOne[0]?.path)
-          : '',
+          : bannerList[0].linkBannerOne || '',
         linkBannerTwo: files?.bannerTwo
           ? path.resolve(files.bannerTwo[0].path)
-          : '',
+          : bannerList[0].linkBannerTwo || '',
         linkBannerThree: files?.bannerThree
           ? path.resolve(files.bannerThree[0].path)
-          : '',
+          : bannerList[0].linkBannerThree || '',
       };
-
-      console.log('newBannersData', newBannersData);
-
-      const bannerList = await this.topBannerModel.findAll();
 
       if (bannerList.length === 0) {
         await this.topBannerModel.create({

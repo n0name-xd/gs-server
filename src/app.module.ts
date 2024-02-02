@@ -11,6 +11,7 @@ import { TopbanerModule } from './topbaner/topbaner.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { TopBanner } from './topbaner/models/top-banner.model';
 import { FileModule } from './file/file.module';
+import { ProductsModule } from './products/products.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { FileModule } from './file/file.module';
     AuthModule,
     TopbanerModule,
     FileModule,
+    ProductsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
